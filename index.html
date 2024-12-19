@@ -57,33 +57,7 @@
 <body>
   <h1>IP Location Information</h1>
   <div id="data-container">
-          dataContainer.innerHTML = '<p>Loading...</p>';
-      try {
-        // Step 1: Fetch the user's IP address
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        if (!ipResponse.ok) throw new Error('Failed to fetch IP');
-        const ipData = await ipResponse.json();
-
-        // Step 2: Fetch location data using the IP address
-        const locationResponse = await fetch(`https://ipinfo.io/${ipData.ip}/json`);
-        if (!locationResponse.ok) throw new Error('Failed to fetch location data');
-        const locationData = await locationResponse.json();
-
-        // Display data in the UI
-        dataContainer.innerHTML = `
-          <div class="data-item"><strong>IP Address:</strong> ${locationData.ip}</div>
-          <div class="data-item"><strong>City:</strong> ${locationData.city}</div>
-          <div class="data-item"><strong>Region:</strong> ${locationData.region}</div>
-          <div class="data-item"><strong>Country:</strong> ${locationData.country}</div>
-          <div class="data-item"><strong>Location:</strong> ${locationData.loc}</div>
-          <div class="data-item"><strong>Postal Code:</strong> ${locationData.postal || 'N/A'}</div>
-          <div class="data-item"><strong>Time Zone:</strong> ${locationData.timezone}</div>
-          <div class="data-item"><strong>Organization:</strong> ${locationData.org || 'N/A'}</div>
-        `;
-      } catch (error) {
-        dataContainer.innerHTML = '<p>Error: Failed to fetch data.</p>';
-        console.error(error);
-      }
+    <!-- This will be dynamically populated -->
   </div>
   <button id="fetch-btn">Fetch Data</button>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6778626152323503"
@@ -102,8 +76,9 @@
     const fetchBtn = document.getElementById('fetch-btn');
     const dataContainer = document.getElementById('data-container');
 
-    fetchBtn.addEventListener('click', async () => {
-      dataContainer.innerHTML = '<p>Loading...</p>';
+    // Function to fetch and display data
+    const fetchData = async () => {
+      dataContainer.innerHTML = '<p>Loading...</p>'; // Show loading message
       try {
         // Step 1: Fetch the user's IP address
         const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -130,7 +105,13 @@
         dataContainer.innerHTML = '<p>Error: Failed to fetch data.</p>';
         console.error(error);
       }
-    });
+    };
+
+    // Automatically load data when the page loads
+    window.onload = fetchData;
+
+    // Optional: Keep the button functionality to fetch data manually as well
+    fetchBtn.addEventListener('click', fetchData);
   </script>
 </body>
 </html>
