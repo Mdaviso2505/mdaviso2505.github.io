@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="netpub_209672a34f4e9fe3b7d663799d7e6ff5" content="209672a34f4e9fe3b7d663799d7e6ff5_0c82882d21e8020a4d3077bde3f83f6b" />
   <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
   <title>My First Web Page</title>
@@ -21,16 +22,49 @@
       border: none;
       border-radius: 5px;
     }
+    #ad-container {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 250px;
+      background-color: #e0e0e0;
+    }
+    ins[class^="adv-"] {
+      display: inline-block !important;
+      width: 300px;
+      height: 250px;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Welcome to My Website</h1>
-  <p>This is a simple HTML page created as an example.</p>
-	<!-- Netpub Banner - IAB 300x250 -->
-<script type="text/javascript">(function(a) { if (!document.getElementById(a)) { const s = document.createElement("script"); s.id = a; s.async = true; s.src = ["https://fstatic.netpub.media/static/", a, ".min.js?", Date.now()].join(""); document.head.appendChild(s); } })("209672a34f4e9fe3b7d663799d7e6ff5");</script>
-<ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5" data-sizes-desktop="200x200,250x250,300x250,336x280" data-sizes-mobile="200x200,250x250,300x250,336x280" data-slot="1"></ins>
+  <h1>Welcomes to My Website</h1>
+  <p>This is a simple HTML page created as an example with ads.</p>
+
+  <div id="ad-container">
+    <!-- Netpub Banner - IAB 300x250 -->
+    <ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5"
+         data-sizes-desktop="300x250"
+         data-sizes-mobile="300x250"
+         data-slot="1"></ins>
+  </div>
+
   <button onclick="alert('Hello there!')">Click Me</button>
+
+  <!-- Load ad script after DOM is ready -->
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const scriptId = "209672a34f4e9fe3b7d663799d7e6ff5";
+      if (!document.getElementById(scriptId)) {
+        const s = document.createElement("script");
+        s.id = scriptId;
+        s.async = true;
+        s.src = `https://fstatic.netpub.media/static/${scriptId}.min.js?${Date.now()}`;
+        document.head.appendChild(s);
+      }
+    });
+  </script>
 
 </body>
 </html>
