@@ -2,46 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GDPR Consent Example - Netpub Ads</title>
+  <title>GDPR + Netpub Ad Example</title>
 
-  <!-- Load Netpub GDPR CMP Script -->
+  <!-- GDPR CMP Script (Netpub) -->
   <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
 
+  <style>
+    .ad-container {
+      width: 100%;
+      max-width: 336px;
+      margin: 20px auto;
+      text-align: center;
+    }
+  </style>
+
   <script>
-    // Optional: Wait for the CMP to initialize and handle consent status
+    // Wait for the page to load
     window.addEventListener("load", function () {
-      // CMP initializes a global __tcfapi function
+      const loadNetpubAd = () => {
+        // Load Netpub banner ad script dynamically
+        const scriptId = "209672a34f4e9fe3b7d663799d7e6ff5";
+        if (!document.getElementById(scriptId)) {
+          const s = document.createElement("script");
+          s.id = scriptId;
+          s.async = true;
+          s.src = `https://fstatic.netpub.media/static/${scriptId}.min.js?${Date.now()}`;
+          document.head.appendChild(s);
+        }
+      };
+
+      // Check for GDPR consent via __tcfapi
       const checkConsent = () => {
         if (typeof __tcfapi === 'function') {
           __tcfapi('getTCData', 2, function (tcData, success) {
             if (success) {
-              // You can check tcData.purpose.consents or vendor.consents
               console.log('GDPR Consent Data:', tcData);
-
-              // Example: only load ads if consent is given for purpose 1 (store and/or access information)
               if (tcData.purpose.consents[1]) {
-                console.log("Consent granted. Load Netpub Ads...");
-                // Your ad initialization code here
-                <!-- Netpub Banner - IAB 300x250 -->
-<script type="text/javascript">(function(a) { if (!document.getElementById(a)) { const s = document.createElement("script"); s.id = a; s.async = true; s.src = ["https://fstatic.netpub.media/static/", a, ".min.js?", Date.now()].join(""); document.head.appendChild(s); } })("209672a34f4e9fe3b7d663799d7e6ff5");</script>
-<ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5" data-sizes-desktop="200x200,250x250,300x250,336x280" data-sizes-mobile="200x200,250x250,300x250,336x280" data-slot="1"></ins>
+                console.log("Consent granted. Loading Netpub banner ad...");
+                loadNetpubAd();
               } else {
-                console.warn("Consent not granted. Ads will not be shown.");
+                console.warn("Consent denied. Ad not loaded.");
               }
             }
           });
         } else {
-          console.warn("__tcfapi is not available yet.");
+          console.warn("__tcfapi not available yet.");
         }
       };
 
-      // Delay a little to ensure CMP has initialized
+      // Give time for CMP to initialize
       setTimeout(checkConsent, 1000);
     });
   </script>
 </head>
 <body>
-  <h1>Welcome to Our Site</h1>
-  <p>This page respects your privacy and complies with GDPR.</p>
+  <h1>Welcome!</h1>
+  <p>This site uses cookies and may show ads if you consent.</p>
+
+  <!-- Netpub Ad Banner Container -->
+  <div class="ad-container">
+    <ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5"
+         data-sizes-desktop="200x200,250x250,300x250,336x280"
+         data-sizes-mobile="200x200,250x250,300x250,336x280"
+         data-slot="1"></ins>
+  </div>
 </body>
 </html>
