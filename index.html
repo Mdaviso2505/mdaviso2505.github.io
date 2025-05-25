@@ -1,14 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GDPR Consent Example - Netpub Ads</title>
 
-<body>
-<script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
-  <h1>Welcomes to My Website</h1>
-  <p>This is a simple HTML page created as an example with ads.</p>
+  <!-- Load Netpub GDPR CMP Script -->
+  <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
 
+  <script>
+    // Optional: Wait for the CMP to initialize and handle consent status
+    window.addEventListener("load", function () {
+      // CMP initializes a global __tcfapi function
+      const checkConsent = () => {
+        if (typeof __tcfapi === 'function') {
+          __tcfapi('getTCData', 2, function (tcData, success) {
+            if (success) {
+              // You can check tcData.purpose.consents or vendor.consents
+              console.log('GDPR Consent Data:', tcData);
 
-<!-- Netpub Banner - IAB 300x250 -->
+              // Example: only load ads if consent is given for purpose 1 (store and/or access information)
+              if (tcData.purpose.consents[1]) {
+                console.log("Consent granted. Load Netpub Ads...");
+                // Your ad initialization code here
+                <!-- Netpub Banner - IAB 300x250 -->
 <script type="text/javascript">(function(a) { if (!document.getElementById(a)) { const s = document.createElement("script"); s.id = a; s.async = true; s.src = ["https://fstatic.netpub.media/static/", a, ".min.js?", Date.now()].join(""); document.head.appendChild(s); } })("209672a34f4e9fe3b7d663799d7e6ff5");</script>
 <ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5" data-sizes-desktop="200x200,250x250,300x250,336x280" data-sizes-mobile="200x200,250x250,300x250,336x280" data-slot="1"></ins>
+              } else {
+                console.warn("Consent not granted. Ads will not be shown.");
+              }
+            }
+          });
+        } else {
+          console.warn("__tcfapi is not available yet.");
+        }
+      };
+
+      // Delay a little to ensure CMP has initialized
+      setTimeout(checkConsent, 1000);
+    });
+  </script>
+</head>
+<body>
+  <h1>Welcome to Our Site</h1>
+  <p>This page respects your privacy and complies with GDPR.</p>
 </body>
 </html>
