@@ -1,68 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="netpub_209672a34f4e9fe3b7d663799d7e6ff5" content="209672a34f4e9fe3b7d663799d7e6ff5_0c82882d21e8020a4d3077bde3f83f6b" />
-  <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
-  <title>My First Web Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      text-align: center;
-      padding: 50px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    #ad-container {
-      margin: 20px auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 250px;
-      background-color: #e0e0e0;
-    }
-    ins[class^="adv-"] {
-      display: inline-block !important;
-      width: 300px;
-      height: 250px;
-    }
-  </style>
-</head>
-<body>
 
+<body>
+<script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
   <h1>Welcomes to My Website</h1>
   <p>This is a simple HTML page created as an example with ads.</p>
 
-  <div id="ad-container">
-<!-- Netpub Banner - Interstitial 0x0 -->
+
+<!-- Netpub Banner - IAB 300x250 -->
 <script type="text/javascript">(function(a) { if (!document.getElementById(a)) { const s = document.createElement("script"); s.id = a; s.async = true; s.src = ["https://fstatic.netpub.media/static/", a, ".min.js?", Date.now()].join(""); document.head.appendChild(s); } })("209672a34f4e9fe3b7d663799d7e6ff5");</script>
-<ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5" data-sizes-desktop="1050x300,200x200,250x250,300x250,336x280,400x350,468x60,678x60,700x300,728x500,728x90,750x400,750x480,870x200,970x250,970x90" data-sizes-mobile="200x200,250x250,300x250,300x50,320x100,320x50,360x100,360x50" data-interstitial="1"></ins>
-  </div>
-
-  <button onclick="alert('Hello there!')">Click Me</button>
-
-  <!-- Load ad script after DOM is ready -->
-  <script>
-    window.addEventListener("DOMContentLoaded", function () {
-      const scriptId = "209672a34f4e9fe3b7d663799d7e6ff5";
-      if (!document.getElementById(scriptId)) {
-        const s = document.createElement("script");
-        s.id = scriptId;
-        s.async = true;
-        s.src = `https://fstatic.netpub.media/static/${scriptId}.min.js?${Date.now()}`;
-        document.head.appendChild(s);
-      }
-    });
-  </script>
-
+<ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5" data-sizes-desktop="200x200,250x250,300x250,336x280" data-sizes-mobile="200x200,250x250,300x250,336x280" data-slot="1"></ins>
 </body>
 </html>
