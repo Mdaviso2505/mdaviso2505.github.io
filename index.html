@@ -2,36 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Netpub GDPR + Banner Ad</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Netpub Ad with Default GDPR Consent (Test Only)</title>
 
-  <!-- Optional: Fake GDPR Consent (testing or non-EU only) -->
-  <script>
-    window.__tcfapi = function(command, version, callback) {
-      if (command === 'getTCData') {
-        callback({
-          gdprApplies: false,
-          tcString: "fakeConsentString",
-          purpose: {
-            consents: {
-              1: true, 2: true, 3: true, 4: true, 5: true,
-              6: true, 7: true, 8: true, 9: true, 10: true
-            }
-          },
-          vendor: {
-            consents: {
-              100: true // Example vendor ID (optional)
-            }
-          }
-        }, true);
-      }
-    };
+  <!-- ✅ Netpub CMP: Real GDPR Consent (loads popup automatically) -->
+  <script
+    type="text/javascript"
+    src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js"
+    defer>
   </script>
 
-  <!-- Netpub GDPR Script (won't auto-show popup if consent is faked) -->
-  <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
-
-  <!-- Optional: Styling to center the ad -->
+  <!-- Optional styling -->
   <style>
     body {
       font-family: sans-serif;
@@ -46,10 +27,10 @@
 </head>
 <body>
 
-  <h1>Netpub Ad Test Page</h1>
-  <p>This page loads a 300x250 Netpub banner with default GDPR consent (test only).</p>
+  <h1>Netpub Ad with Real GDPR Consent</h1>
+  <p>This banner only shows after the user gives proper consent via GDPR popup.</p>
 
-  <!-- Ad Container -->
+  <!-- ✅ Ad container -->
   <div class="ad-container">
     <ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5"
          data-sizes-desktop="300x250"
@@ -58,7 +39,7 @@
     </ins>
   </div>
 
-  <!-- Netpub Ad Script -->
+  <!-- ✅ Netpub Ad Script -->
   <script type="text/javascript">
     (function(a) {
       if (!document.getElementById(a)) {
