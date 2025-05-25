@@ -2,69 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GDPR + Netpub Ad Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netpub Ad with Default GDPR Consent (Test Only)</title>
 
-  <!-- GDPR CMP Script (Netpub) -->
+  <!-- Optional: Fake GDPR Consent (testing or non-EU only) -->
+  <script>
+    window.__tcfapi = function(command, version, callback) {
+      if (command === 'getTCData') {
+        callback({
+          gdprApplies: false,
+          tcString: "fakeConsentString",
+          purpose: {
+            consents: {
+              1: true, 2: true, 3: true, 4: true, 5: true,
+              6: true, 7: true, 8: true, 9: true, 10: true
+            }
+          },
+          vendor: {
+            consents: {
+              100: true // Example vendor ID (optional)
+            }
+          }
+        }, true);
+      }
+    };
+  </script>
+
+  <!-- Netpub GDPR Script (won't auto-show popup if consent is faked) -->
   <script type="text/javascript" src="https://fstatic.netpub.media/extra/cmp/cmp-gdpr.js" defer></script>
 
+  <!-- Optional: Styling to center the ad -->
   <style>
-    .ad-container {
-      width: 100%;
-      max-width: 336px;
-      margin: 20px auto;
+    body {
+      font-family: sans-serif;
       text-align: center;
+      padding: 40px;
+    }
+    .ad-container {
+      margin: 20px auto;
+      max-width: 300px;
     }
   </style>
-
-  <script>
-    // Wait for the page to load
-    window.addEventListener("load", function () {
-      const loadNetpubAd = () => {
-        // Load Netpub banner ad script dynamically
-        const scriptId = "209672a34f4e9fe3b7d663799d7e6ff5";
-        if (!document.getElementById(scriptId)) {
-          const s = document.createElement("script");
-          s.id = scriptId;
-          s.async = true;
-          s.src = `https://fstatic.netpub.media/static/${scriptId}.min.js?${Date.now()}`;
-          document.head.appendChild(s);
-        }
-      };
-
-      // Check for GDPR consent via __tcfapi
-      const checkConsent = () => {
-        if (typeof __tcfapi === 'function') {
-          __tcfapi('getTCData', 2, function (tcData, success) {
-            if (success) {
-              console.log('GDPR Consent Data:', tcData);
-              if (tcData.purpose.consents[1]) {
-                console.log("Consent granted. Loading Netpub banner ad...");
-                loadNetpubAd();
-              } else {
-                console.warn("Consent denied. Ad not loaded.");
-              }
-            }
-          });
-        } else {
-          console.warn("__tcfapi not available yet.");
-        }
-      };
-
-      // Give time for CMP to initialize
-      setTimeout(checkConsent, 1000);
-    });
-  </script>
 </head>
 <body>
-  <h1>Welcome!</h1>
-  <p>This site uses cookies and may show ads if you consent.</p>
 
-  <!-- Netpub Ad Banner Container -->
+  <h1>Netpub Ad Test Page</h1>
+  <p>This page loads a 300x250 Netpub banner with default GDPR consent (test only).</p>
+
+  <!-- Ad Container -->
   <div class="ad-container">
     <ins class="adv-209672a34f4e9fe3b7d663799d7e6ff5"
-         data-sizes-desktop="200x200,250x250,300x250,336x280"
-         data-sizes-mobile="200x200,250x250,300x250,336x280"
-         data-slot="1"></ins>
+         data-sizes-desktop="300x250"
+         data-sizes-mobile="300x250"
+         data-slot="1">
+    </ins>
   </div>
+
+  <!-- Netpub Ad Script -->
+  <script type="text/javascript">
+    (function(a) {
+      if (!document.getElementById(a)) {
+        const s = document.createElement("script");
+        s.id = a;
+        s.async = true;
+        s.src = "https://fstatic.netpub.media/static/" + a + ".min.js?" + Date.now();
+        document.head.appendChild(s);
+      }
+    })("209672a34f4e9fe3b7d663799d7e6ff5");
+  </script>
+
 </body>
 </html>
