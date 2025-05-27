@@ -2,13 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Example Site <title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="monetag" content="e6699c647a4365e15c2ae63ae913450a">
-
-
+  <title>JSON Beautifier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    pre {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
-<h1>Hello world</h1>
+
+  <h1>JSON Beautifier</h1>
+  <textarea id="jsonInput" placeholder="Paste your JSON here..."></textarea>
+  <button onclick="beautifyJSON()">Beautify JSON</button>
+  <pre id="jsonOutput"></pre>
+
+  <script>
+    function beautifyJSON() {
+      const input = document.getElementById('jsonInput').value;
+      try {
+        const parsed = JSON.parse(input);
+        const beautified = JSON.stringify(parsed, null, 2);
+        document.getElementById('jsonOutput').textContent = beautified;
+      } catch (e) {
+        document.getElementById('jsonOutput').textContent = 'Invalid JSON!';
+      }
+    }
+  </script>
 
 </body>
 </html>
