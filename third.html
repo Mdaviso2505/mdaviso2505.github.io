@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Temp Mail Automation</title>
+</head>
+<body>
+  <h1>Temp Mail & Verification</h1>
+  <pre id="output">Loading...</pre>
+
+  <script>
+    const output = document.getElementById("output");
+
+    const userAgent = "Mozilla/5.0 (Linux; Android 15; V2352A Build/AP3A.240905.015.A2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.138 Mobile Safari/537.36";
+    const headers = {
+      'User-Agent': userAgent,
+      'sec-ch-ua-platform': "\"Android\"",
+      'sec-ch-ua': "\"Not(A:Brand\";v=\"99\", \"Android WebView\";v=\"133\", \"Chromium\";v=\"133\"",
+      'Content-Type': "application/json",
+      'sec-ch-ua-mobile': "?1",
+      'origin': "https://temp-mail.org",
+      'x-requested-with': "mark.via.gp",
+      'sec-fetch-site': "same-site",
+      'sec-fetch-mode': "cors",
+      'sec-fetch-dest': "empty",
+      'referer': "https://temp-mail.org/",
+      'accept-language': "en-US,en;q=0.9",
+      'priority': "u=1, i"
+    };
+
+    async function fetchTempMail() {
+      try {
+        const res = await fetch("https://web2.temp-mail.org/mailbox", {
+          method: "POST",
+          headers: headers
+        });
+        const data = await res.json();
+        output.innerText = `Temp Email: ${data.mailbox}\nToken: ${data.token}\n`;
+        return data;
+      } catch (e) {
+        output.innerText = `Error fetching temp mail: ${e}`;
+      }
+    }
+
+    async function sendVerificationRequest(email) {
+      const payload = { email };
+      const headers001 = {
+        'User-Agent': userAgent,
+        'Accept': "application/json, text/plain, */*",
+        'Content-Type': "application/json",
+        'sec-ch-ua-platform': "\"Android\"",
+        'sec-ch-ua': "\"Not(A:Brand\";v=\"99\", \"Android WebView\";v=\"133\", \"Chromium\";v=\"133\"",
+        'sec-ch-ua-mobile': "?1",
+        'origin': "https://www.go2proxy.com",
+        'x-requested-with': "mark.via.gp",
+        'sec-fetch-site': "same-site",
+        'sec-fetch-mode': "cors",
+        'sec-fetch-dest': "empty",
+        'referer': "https://www.go2proxy.com/",
+        'accept-language': "en-US,en;q=0.9",
+        'priority': "u=1, i"
+      };
+
+      const res = await fetch("https://server.go2proxy.com/api/v1/verification-codes/email", {
+        method: "POST",
+        headers: headers001,
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      output.innerText += `\nVerification Sent: ${data.msg}`;
+    }
+
+    async function waitForEmail(token, email) {
+      const authHeaders = {
+        ...headers,
+        'authorization': "Bearer " + token
+      };
+
+      const getMessage = async () => {
+        const res = await fetch("https://web2.temp-mail.org/messages", {
+          headers: authHeaders
+        });
+        const data = await res.json();
+        return data.messages || [];
+      };
+
+      const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+      for (let i = 0; i < 30; i++) {
+        const messages = await getMessage();
+        if (messages.length > 0) {
+          const msgId = messages[0]._id;
+          const msgRes = await fetch(`https://web2.temp-mail.org/messages/${msgId}`, {
+            headers: authHeaders
+          });
+          const msgData = await msgRes.json();
+
+          const match = msgData.bodyHtml.match(/\d{6}/);
+          const code = match ? match[0] : null;
+          if (code) {
+            output.innerText += `\nVerification Code: ${code}`;
+            return code;
+          } else {
+            output.innerText += `\nEmail received but code not found.`;
+            return null;
+          }
+        }
+        await delay(3000);
+      }
+      output.innerText += `\nNo email received in time.`;
+      return null;
+    }
+
+    async function registerUser(email, code) {
+      const payload = {
+        email: email,
+        password: "123ABCabc@",
+        email_code: code
+      };
+
+      const headers001 = {
+        'User-Agent': userAgent,
+        'Accept': "application/json, text/plain, */*",
+        'Content-Type': "application/json",
+        'sec-ch-ua-platform': "\"Android\"",
+        'sec-ch-ua': "\"Not(A:Brand\";v=\"99\", \"Android WebView\";v=\"133\", \"Chromium\";v=\"133\"",
+        'sec-ch-ua-mobile': "?1",
+        'origin': "https://www.go2proxy.com",
+        'x-requested-with': "mark.via.gp",
+        'sec-fetch-site': "same-site",
+        'sec-fetch-mode': "cors",
+        'sec-fetch-dest': "empty",
+        'referer': "https://www.go2proxy.com/",
+        'accept-language': "en-US,en;q=0.9",
+        'priority': "u=1, i"
+      };
+
+      const res = await fetch("https://server.go2proxy.com/api/v1/register", {
+        method: "POST",
+        headers: headers001,
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      output.innerText += `\nRegistration: ${data.msg}`;
+    }
+
+    async function main() {
+      const tempData = await fetchTempMail();
+      if (!tempData) return;
+
+      await sendVerificationRequest(tempData.mailbox);
+
+      const code = await waitForEmail(tempData.token, tempData.mailbox);
+      if (code) {
+        await registerUser(tempData.mailbox, code);
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
